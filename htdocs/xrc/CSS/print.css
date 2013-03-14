@@ -1,0 +1,35 @@
+body {
+   background: white;
+   font-size: 12pt;
+   }
+#nav, #top {
+   display: none;
+}
+.headimg {
+   display: none;
+}
+#wrapper, #content {
+   width: auto;
+   margin: 0 5%;
+   padding: 0;
+   border: 0;
+   float: none;
+   color: black;
+   background: transparent none;
+   }
+div#content {
+   margin-left: 10%;
+}
+a:link, a:visited {
+   color: #520;
+   background: transparent;
+   font-weight: bold;
+   text-decoration: underline;
+}
+#content a:link:after, #content a:visited:after {
+   content: " (" attr(href) ") ";
+   font-size: 90%;
+}
+#content a[href^="/"]:after {
+   content: " (http://www.alistapart.com" attr(href) ") ";
+}
