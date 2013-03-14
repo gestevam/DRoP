@@ -1,0 +1,11 @@
+
+module mypol 1.0;
+
+require {
+	type httpd_t;
+	type httpd_sys_script_exec_t;
+	class lnk_file read;
+}
+
+#============= httpd_t ==============
+allow httpd_t httpd_sys_script_exec_t:lnk_file read;

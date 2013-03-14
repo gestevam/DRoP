@@ -1,0 +1,151 @@
+* {
+	margin: 0;
+	padding: 0;
+}
+body {
+	text-align: center;
+	background-color: #fff;
+	font: 90.5%/1.6 "Lucida Grande", "Lucida Sans", Verdana, sans-serif;
+}
+a:link { 
+	color: #007; 
+	text-decoration: none;
+}
+a:visited { 
+	color: #505; 
+	text-decoration: none;
+}
+a:active { 
+	color: #069; 
+	text-decoration: none;
+}
+a:hover { 
+	color: #069; 
+	font-weight: bold;
+	text-decoration: underline;
+}
+.linkimg {
+	border: none;
+}
+/*a:hover .linkimg {
+	border: 2px solid #069;
+}*/
+#wrapper {	
+	width: 100%; 
+	min-width: 800px;
+	margin: 0 auto; 
+	text-align: left;
+	font-size: 1em;
+	background: #fff url('../images/side_bg.gif') repeat-y top left;
+}
+
+#logo {
+	background:#000090 url('../images/top_bg.gif') repeat-x top left;
+	padding: 0;
+	color: red;
+	font-size: 1em;
+}
+#bar {
+	background: #ddd url('../images/topbar.gif') repeat-x top left;
+	height: 24px;
+}
+.headimg {
+	background: #000090;
+	display: block;
+	padding: 0;
+	margin-left: 0em;
+	text-decoration: none;
+	border: 0;
+	float: left;
+}
+.nameimg {
+	background: #000090;
+	display: block;
+	padding: 0;
+	margin-left: 0em;
+	text-decoration: none;
+	border: 0;
+	float: left;
+}
+.clearfix:after {
+    content: "."; 
+    display: block; 
+    height: 0; 
+    clear: both; 
+    visibility: hidden;
+}
+.clearfix {display: inline-block;}
+/* Hides from IE-mac \*/
+* html .clearfix {height: 1%;}
+.clearfix {display: block;}
+/* End hide from IE-mac */
+
+#nav {
+	background:#bbb url('../images/button_bg.gif') no-repeat top left;
+	width: 170px;
+}
+#content { 
+	padding: 10px;
+	width: 75%;
+	float: right; 
+}
+.content { 
+	padding: 10px;
+	width: 75%;
+	float: right; 
+}
+
+#footer { 
+	clear: both; 
+  	background-color: #fff;
+	text-align: center;
+} 
+
+.indent {
+	list-style-type: none;
+}
+#nav li {
+	padding-top: 10px;
+	padding-bottom: 10px;
+	padding-left: 10px;
+}
+
+li {
+	padding: 0 0;
+	margin-left: 20px;
+	background: url('../images/bullet_black.png') no-repeat 0 30%;
+}
+li a {
+	font-weight: bold;
+}
+p {
+	font-weight: normal;
+}
+
+.ip {
+	border-collapse: collapse;
+	border: 1px solid black;
+	text-align: center;
+}
+.ip th {
+	font-weight: bold;
+	color: white;
+}
+.ip td, .ip th {
+	border: 1px solid black;
+}
+.ip tr {
+	border: 1px solid black;
+	background: #fff;
+}
+.ip thead tr {
+	background: #069
+}
+.ip thead tr:hover {
+	background: #069;
+	color: white;
+}
+.ip tr:hover {
+	background: #ddd;
+	color: black;
+}

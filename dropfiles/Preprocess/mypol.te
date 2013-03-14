@@ -1,0 +1,31 @@
+
+module mypol 1.0;
+
+require {
+	type httpd_tmp_t;
+	type httpd_sys_script_exec_t;
+	type sysctl_fs_t;
+	type httpd_tmpfs_t;
+	type httpd_t;
+	class process execmem;
+	class lnk_file read;
+	class dir search;
+	class file execute;
+}
+
+#============= httpd_t ==============
+#!!!! This avc is allowed in the current policy
+
+allow httpd_t httpd_sys_script_exec_t:lnk_file read;
+#!!!! This avc is allowed in the current policy
+
+allow httpd_t httpd_tmp_t:file execute;
+#!!!! This avc is allowed in the current policy
+
+allow httpd_t httpd_tmpfs_t:file execute;
+#!!!! This avc is allowed in the current policy
+
+allow httpd_t self:process execmem;
+#!!!! This avc is allowed in the current policy
+
+allow httpd_t sysctl_fs_t:dir search;

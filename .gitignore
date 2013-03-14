@@ -1,0 +1,11 @@
+*~
+*.pyc
+*.swp
+20/
+backups/
+dropbackup/
+upload/
+results/
+user1/
+user2/
+*.log
