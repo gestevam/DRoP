@@ -53,3 +53,4 @@ upload_review/
 results_review/
 *.pdb
 pdbs.zip
+config.php
