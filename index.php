@@ -1,3 +1,4 @@
+
 <?php
 session_start();
 require("config.php");
@@ -13,8 +14,8 @@ if( isset($_POST['id']) ) {
 		$_SESSION['UID'] = $resultsArray['user_ID'];
 	print '<meta http-equiv="Refresh" content="0; URL=redirect.php" />';
         }
-	else {$error = "Incorrect User Name/Password"; }
-	}
+	else
+	{print 'invalid login.';}}
 ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
 	"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
@@ -27,7 +28,7 @@ if( isset($_POST['id']) ) {
 
 </head>
 <body>
-
+<link rel="shortcut icon" href="favicon.ico" type="image/x-icon"/>
 	<div id="wrapper">
 		<div id="logo" class="clearfix">
 			<img src="images/trypsin.png" width="184" height="93" alt="" class="headimg" />
@@ -51,13 +52,14 @@ else print "Please Log In.";
 		</div>
 		
 		<div id="content">
-			<h1>Overview</h1>
-			<br />
+
 <?php
 
 
 if( !$_SESSION['login'] ) { print $error;
 	?>
+	<h1>Please login</h1>
+	<br />
 	<form method="post" action="<?php print "{$_SERVER['PHP_SELF']}"; ?>">
 	<?php
 	print "<table><tr><td>Username: &nbsp; &nbsp;</td>";
@@ -66,8 +68,11 @@ if( !$_SESSION['login'] ) { print $error;
 	print '<td><input type="password" size="20" maxlength="20" name="psswrd" value="" /></td></tr>';
 	print '<tr><td>&nbsp;</td><td><input type="submit" name="submit" value="Submit" /></td></tr></table>';
 	print '</form>';
+	print "<a href='./registration.php'>New user registration</a>";
 }
 else { ?>
+<h1>Overview</h1>
+<br />
 <script type="text/javascript">
 function loadXmlHttp(url, id) {
 var f = this;
@@ -124,7 +129,7 @@ else if (window.attachEvent)
 		
 		</div>
 <?php
-if($_SESSION['login']==1 && $_SESSION['access'] > 0) {
+if(1 or $_SESSION['login']==1 && $_SESSION['access'] > 0) {
 ?>
 		<div id="nav">
 			<img src="images/side_top.gif" width="184" height="23" alt="" />
@@ -147,8 +152,8 @@ print '<img src="images/side_bottomcopy.gif" alt="" /></div>';
 
 	<div id="footer">
 		<hr />
-		<p>&copy; 2010-2012 by Bradley Kearney.</p>
-		<p>Feedback or questions? | E-mail the <a href="mailto:bmkearne@ncsu.edu">Author</a>.</p>
+		<p>&copy; 2010-2013</p>
+		<p>Feedback or questions? | E-mail <a href="mailto:c.mattos@neu.edu">Carla Mattos</a>.</p>
 	</div>
 	</div>
 	

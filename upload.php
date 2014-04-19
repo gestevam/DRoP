@@ -55,20 +55,18 @@ else print "Please Log In.";
 
 if( !$_SESSION['login'] ) { print $error;
 	?>
+	<meta http-equiv="refresh" content="0;URL=index.php" />
 	<form method="post" action="<?php print "{$_SERVER['PHP_SELF']}"; ?>">
 	<?php
-	print "<table><tr><td>Username: &nbsp; &nbsp;</td>";
-	print '<td><input type="text" size="30" maxlength="50" name="id" autocomplete="off" value="" /></td></tr>';
-	print "<tr><td>Password: </td>";
-	print '<td><input type="password" size="20" maxlength="20" name="psswrd" value="" /></td></tr>';
-	print '<tr><td>&nbsp;</td><td><input type="submit" name="submit" value="Submit" /></td></tr></table>';
-	print '</form>';
 }
 else {
 print '<form action="upload1.php" method="post" enctype="multipart/form-data">';
-print '<label for="file">Filename:</label>';
+print '<label for="file">Filename: </label>';
 print '<input type="file" name="file" id="file" />';
 print '<br />';
+print '<input type="radio" name="runtype" value="1" checked> Normal DRoP Run<br>';
+print '<input type="radio" name="runtype" value="2"> Stop before superimposing.<br>';
+print '<input type="radio" name="runtype" value="3"> Reupload of superimposed files.<br>';
 print '<input type="submit" name="submit" value="Submit" />';
 print '</form>';
 }
@@ -76,7 +74,7 @@ print '</form>';
 		
 		</div>
 <?php
-if($_SESSION['login']==1 && $_SESSION['access'] > 0) {
+if(1 or $_SESSION['login']==1 && $_SESSION['access'] > 0) {
 ?>
 		<div id="nav">
 			<img src="images/side_top.gif" width="184" height="23" alt="" />
@@ -99,8 +97,8 @@ print '<img src="images/side_bottomcopy.gif" alt="" /></div>';
 
 	<div id="footer">
 		<hr />
-		<p>&copy; 2010-2012 by Bradley Kearney.</p>
-		<p>Feedback or questions? | E-mail the <a href="mailto:bmkearne@ncsu.edu">Author</a>.</p>
+		<p>&copy; 2010-2013</p>
+		<p>Feedback or questions? | E-mail <a href="mailto:c.mattos@neu.edu">Carla Mattos</a>.</p>
 	</div>
 	</div>
 	

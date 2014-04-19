@@ -168,6 +168,17 @@ class Atom:
         if(self._position): return self._position
         self._position = (self['x'], self['y'], self['z'])
         return self._position
+
+    def color(self, number):
+        mylist=[]
+        if self['B']==5.00:
+            self['B']=number
+        mylist=(self.pdb.nlist(self.position()))
+        for atom in mylist:
+            if atom['res name'] not in protein_names:
+                continue
+            if atom['B']==5.00:
+                atom['B']=number
         
     def __str__(self):
         return self.line
@@ -254,6 +265,60 @@ class PDB(list):
     wList = []
     flag = 0
     crys1 = 0
+
+    def blankcolor(self):
+        for atom in self:
+            if atom['type'] in atom_names:
+                atom['B']=float('5.00')
+
+    def colorres(self, number):
+        thelist=[]
+        for atom in self:
+            if atom['res name'] in protein_names and atom['type'] in atom_names:
+                testb=atom['B']
+                if testb==number:
+                    thelist.append(atom['res num'])
+        """print "---LIST FOR %d---"%number
+        for i in thelist:
+            print i"""
+        for atom in self:
+            if atom['res name'] in protein_names and atom['type'] in atom_names:
+                testb=atom['B']
+            else:
+                continue
+            if float(atom['res num']) in thelist and testb>number:
+                atom['B']=number
+    def nlist(self, r):
+        cx = math.floor((-self.min_x + r[0]) / self.cutoff)
+        cy = math.floor((-self.min_y + r[1]) / self.cutoff)
+        cz = math.floor((-self.min_z + r[2]) / self.cutoff)
+        cID = cx * self.ly * self.lz + cy * self.lz + cz
+        neighbors = []
+        neigh=[]
+        count = 0
+        for i in range(int(cx-1), int(cx + 2)):
+            for j in range(int(cy-1), int(cy + 2)):
+                for k in range(int(cz-1), int(cz + 2)):
+                    if(i < 0 or j < 0 or k < 0):
+                        break
+                    else:
+                        if(i > (self.lx-1) or j > (self.ly-1) or k > (self.lz-1)):
+                            break
+                        else:
+                            tID = i * self.ly * self.lz + j * self.lz + k
+                            if len(self.cList[int(tID)]) > 0:
+                                neighbors.append(self.cList[int(tID)])
+        if len(neighbors) > 0:
+            for entry in neighbors:
+                for neighbor in entry:
+                    dx = (r[0]-float(neighbor['x']))
+                    dy = (r[1]-float(neighbor['y']))
+                    dz = (r[2]-float(neighbor['z']))
+                    d2 = dx ** 2 + dy ** 2 + dz ** 2
+                    if(d2 < self.cutoff ** 2):
+                        count = count + 1
+                        neigh.append(neighbor)
+        return neigh
     
     def findneighbor(self, r, resnum, f2=0):
         #print self.cutoff
@@ -787,16 +852,20 @@ class PDB(list):
             self.append(Atom(line, i, pdb=self, watercheck=self.watercheck))
             
     def write(self,stamp,flag=0):
+        if len(self)==0:
+		return
         self.sortwaters()
         self.sortorganics()
         self.renumline()
         needend = 1
         started = 0
-        self.out_filename = self.out_filename.replace('Renumbered/', '../../../results/%d/'%int(stamp))
+        if flag==0:
+            self.out_filename = self.out_filename.replace('Renumbered/', '../../../results/%d/'%int(stamp))
         if flag==1:
             self.out_filename=self.out_filename[:-4] + "PRESUPER" + self.out_filename[-4:]
         if flag==2:
-            self.out_filename.replace("PRESUPER","FINAL")
+            self.out_filename = self.out_filename.replace('/results/%d/'%int(stamp), '/results/%d/color/'%int(stamp))
+            #prin self.out_filename
         file = open(str(self.out_filename), 'w')
         for atom in self:
             if(str(atom)[0:6] == "CONECT"):
@@ -813,7 +882,7 @@ class PDB(list):
                     file.write("REMARK       AUTHORS     : Kearney, Roberts, Dechene, Swartz, Mattos\n")
             if(str(atom)[0:3] == "END"):
                 needend = 0
-            if flag==2:
+            if 1:
                 if atom['type'] in atom_names:          
                     if(atom['chain']!='S' and atom['chain']!='Z'):
                         file.write(str(atom))

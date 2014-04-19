@@ -37,15 +37,15 @@ require("config.php");
 		
 		</div>
 <?php
-if(session_is_registered('login') && $_SESSION['login'] == 0) {
+if(session_is_registered('login') && $_SESSION['login'] == 0 || 1) {
 ?>
 		<div id="nav">
 			<img src="images/side_top.gif" width="184" height="23" alt="" />
-			<a href="index.php"><img border="0" src="images/button1.gif" width="184" height="31" alt="Home" /></a>
-			<a href="clients.php"><img border="0" src="images/button2.gif" width="184" height="35" alt="Clients" /></a>
-			<a href="addClient.php"><img border="0" src="images/button3.gif" width="184" height="36" alt="Add Client" /></a>
-			<a href="addServer.php"><img border="0" src="images/button4.gif" width="184" height="31" alt="Add Server" /></a>
-			<a href="manageIP.php"><img border="0" src="images/button5.gif" width="184" height="35" alt="Manage IP's" /></a>
+			<a href="index.php"><img border="0" src="images/button1.png" width="184" height="31" alt="Home" /></a>
+			<a href="upload.php"><img border="0" src="images/button2.png" width="184" height="35" alt="Upload Files" /></a>
+			<a href="server.php"><img border="0" src="images/button3.png" width="184" height="36" alt="Server Status" /></a>
+			<a href="examples.php"><img border="0" src="images/button4.png" width="184" height="31" alt="Examples/Help" /></a>
+			<a href="publications.php"><img border="0" src="images/button5.png" width="184" height="35" alt="Publications" /></a>
 			<img src="images/side_bottomcopy.gif" alt="" />
 		</div>
 <?php
@@ -60,8 +60,8 @@ print '<img src="images/side_bottomcopy.gif" alt="" /></div>';
 
 	<div id="footer">
 		<hr />
-		<p>&copy; 2012 Bradley Kearney.</p>
-		<p>Feedback or questions? | E-mail the <a href="mailto:bmkearne@ncsu.edu">Webmaster</a>.</p>
+		<p>&copy; 2010-2013</p>
+		<p>Feedback or questions? | E-mail <a href="mailto:c.mattos@neu.edu">Carla Mattos</a>.</p>
 	</div>
 	</div>
 	

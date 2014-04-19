@@ -11,7 +11,9 @@ import sys
 import time
 import webbrowser
 import datetime
+import tempfile
 import os
+os.environ['MPLCONFIGDIR'] = tempfile.mkdtemp()
 import copy
 from pdb import *
 from copy import deepcopy
@@ -20,9 +22,9 @@ import re
 import symgen
 import urllib
 import zipfile 
-#import matplotlib
-#matplotlib.use('Agg')
-#import matplotlib.pyplot as plt
+import matplotlib
+matplotlib.use('Agg')
+import matplotlib.pyplot as plt
 import numpy as np
 
 
@@ -847,6 +849,9 @@ class Analyzer:
         max_err=4.5
         print "Organic Cutoff is set to 4.5 Angstroms. For this version, contact Brad to change."
         print "Org groupings"
+        if len(self.organiclist)==0:
+            return
+        print len(self.organiclist)
         self.master_org=[]
         done = 0
         self.magi2 +=1
@@ -1022,16 +1027,22 @@ class Analyzer:
                 </head>
                 <body bgcolor=white>""")
         #date
-        file.write("<p>This file was created automatically by user '<b>%s</b>' on <b>%s</b></p>\n" % (user, date))
-        file.write("<p>Allowable error began at <b>%.2f</b> A and was capped at <b>%.2f</b> A.</p>\n" % (self.start_err, self.err-self.increment))
+        #file.write("<p>This file was created automatically by user '<b>%s</b>' on <b>%s</b></p>\n" % (user, date))
+        #file.write("<p>Allowable error began at <b>%.2f</b> A and was capped at <b>%.2f</b> A.</p>\n" % (self.start_err, self.err-self.increment))
         #files
         file.write("""
                 <table>
                 <tr>
                 <th colspan=2>PDB Files""")
         for i, pdb in enumerate(self.pdbs):
-            file.write("""
+            if i%5==0:
+                file.write("""
+                        </tr>
                         <tr>
+                        <td class='file_n'><pre>%3d  </pre>
+                        <td class='filename' id='file%d'>%s""" % (i + 1, i, pdb.shortname))
+            else:
+                file.write("""
                         <td class='file_n'><pre>%3d  </pre>
                         <td class='filename' id='file%d'>%s""" % (i + 1, i, pdb.shortname))
         file.write('</table>\n')
@@ -1535,7 +1546,7 @@ class Analyzer:
 
         waterclusterpdb = PDB('Renumbered/clusters.pdb')
         orgclusterpdb = PDB('Renumbered/orgcluster.pdb')
-        clusterline = 'ATOM   1052  O   WAT C 312     -91.585  -9.581  16.868  1.00 55.71      O    O\n'
+        clusterline = 'ATOM   1052  O   WAT C 312     -91.585  -9.581  16.868  1.00 55.71      O    O'
         clusterline1 = 'ATOM   1052  O   ORG C 312     -91.585  -9.581  16.868  1.00 55.71      O    O\n'
         for cluster in self.master:
             temp = Atom(clusterline, cluster.res_num, waterclusterpdb)
@@ -1557,7 +1568,8 @@ class Analyzer:
         #And write to file.
         self.write_master()
         for pdb in self.pdbs:
-            pdb.write(self.id,2)
+            pdb.write(self.id,0)
+        print "Wrote initial files."
 
     def viewgraph(self):
         self.water_table.reverse()
@@ -1577,9 +1589,11 @@ class Analyzer:
         for i in ind:
             ind2.append(i+1)
         plt.ylabel('Number of clusters')
-        plt.title('Water Analysis')
+        plt.title('DRoP correction for symmetry-related water positions')
         plt.xlabel('Cluster size')
         plt.xticks(ind+width, ind2 )
+	#plt.yaxis.set_label_position("right")
+	#ply.ylabel('Number of clusters')
         plt.legend( (rects1[0], rects2[0]), ('Before', 'After') )
 
         def autolabel(rects):
@@ -1588,18 +1602,21 @@ class Analyzer:
                 plt.text(rect.get_x()+rect.get_width()/2., 1.05*height, '%d'%int(height),
                         ha='center', va='bottom')
 
-        autolabel(rects1)
+        plt.savefig("../../../results/%d/watercluster.png"%self.id,dpi=300,format='png')
+	autolabel(rects1)
         autolabel(rects2)
-        plt.savefig("%s/watercluster.png"%self.root,dpi=600,format='png')
-        plt.savefig("%s/watercluster.eps"%self.root,dpi=600,format='eps')
-        plt.show()
+        plt.savefig("../../../results/%d/watercluster_labeled.png"%self.id,dpi=300,format='png')
+        #plt.savefig("../../results/%d/watercluster.eps"%self.root,dpi=600,format='eps')
+        #plt.show()
         #plt.savefig("watercluster.png",format='png')
-
+	self.color()
         #self.viewgraph2()
         
     def viewgraph2(self):
-        return
-        self.org_table.reverse()
+	plt.clf()
+        if self.master_len_org==0:
+            return
+	self.org_table.reverse()
         self.org_table_post.reverse()
         N = self.master_len_org
         Before = self.org_table
@@ -1616,7 +1633,7 @@ class Analyzer:
         for i in ind:
             ind2.append(i+1)
         plt.ylabel('Number of clusters')
-        plt.title('Organic Solvent Analysis')
+        plt.title('DRoP correction for symmetry-related organic positions')
         plt.xlabel('Cluster size')
         plt.xticks(ind+width, ind2 )
         plt.legend( (rects1[0], rects2[0]), ('Before', 'After') )
@@ -1627,12 +1644,74 @@ class Analyzer:
                 plt.text(rect.get_x()+rect.get_width()/2., 1.05*height, '%d'%int(height),
                         ha='center', va='bottom')
 
+        #autolabel(rects1)
+        #autolabel(rects2)
+        plt.savefig("../../../results/%d/organiccluster.png"%self.id,dpi=300,format='png')
         autolabel(rects1)
-        autolabel(rects2)
-        plt.savefig("%s/organiccluster.png"%self.root,dpi=600,format='png')
-        plt.savefig("%s/organiccluster.eps"%self.root,dpi=600,format='eps')
-        plt.show()        
-    
+	autolabel(rects2)
+	plt.savefig("../../../results/%d/organiccluster_labeled.png"%self.id,dpi=300,format='png')
+	#plt.savefig("%s/organiccluster.eps"%self.root,dpi=600,format='eps')
+        #plt.show()
+	#self.color()
+	
+    def color(self):
+        self.water_table_post.reverse()
+        print self.water_table_post
+        print len(self.water_table_post)
+        print "in waters"
+        self.createlist()
+        self.pdbs.append(PDB("../../../results/%d/clusters.pdb"%self.id))
+        for pdb in self.pdbs:
+            pdb.blankcolor()
+        for w in self.waters:
+            if w['res num']<=self.water_table_post[0]:
+                w.color(1.00)
+            cutoff=int(len(self.water_table_post)*0.9)
+            cutoff=len(self.water_table_post)-cutoff+1
+            number=0
+            for i in range(cutoff):
+                number+=self.water_table_post[i]
+            if w['res num']<=(number): 
+                w.color(2.00) #cyan
+            cutoff=int(len(self.water_table_post)*0.8)
+            cutoff=len(self.water_table_post)-cutoff+1
+            number=0
+            for i in range(cutoff):
+                number+=self.water_table_post[i]
+            if w['res num']<=(number): 
+                w.color(3.00) #green
+            if w['res num']<=999: #(don't touch this one)
+                w.color(4.00) #orange. red residues = no xtal water interactions period.
+        for w in self.pdbs[-1]:
+            if len(w.line)<1:
+                continue
+            if w['res num']<=self.water_table_post[0]:
+                w.color(1.00)
+            cutoff=int(len(self.water_table_post)*0.9)
+            cutoff=len(self.water_table_post)-cutoff+1
+            number=0
+            for i in range(cutoff):
+                number+=self.water_table_post[i]
+            if w['res num']<=(number): 
+                w.color(2.00) #cyan
+            cutoff=int(len(self.water_table_post)*0.8)
+            cutoff=len(self.water_table_post)-cutoff+1
+            number=0
+            for i in range(cutoff):
+                number+=self.water_table_post[i]
+            if w['res num']<=(number): 
+                w.color(3.00) #green
+            if w['res num']<=99999: #(don't touch this one)
+                w.color(4.00) #orange. red residues = no xtal water interactions period.
+        for pdb in self.pdbs:
+            if (1):#don't touch any of this.
+                pdb.colorres(1.00)
+                pdb.colorres(2.00)
+                pdb.colorres(3.00)
+                pdb.colorres(4.00)
+            pdb.write(self.id,2)
+            print "Wrote colored files."
+
 def run():
     #iprint "Preprocessing files. Please wait."
     print "FINAL ROUND"
@@ -1644,6 +1723,7 @@ def run():
     start_err = '1.0'
     if(not os.path.exists('../../../results/%d'%int(id))):
         os.makedirs('../../../results/%d'%int(id))
+        os.makedirs('../../../results/%d/color'%int(id))
     url = 'http://129.10.89.145/running.php?job=%d&status=400'%int(id)
     raw_return=urllib.urlopen(url).read()
 
@@ -1656,7 +1736,15 @@ def run():
     a = Analyzer(pdb_filenames, root, int(id), err=start_err)
     input = ''
     a.phase3()
-    #a.viewgraph()
+    """
+    try:
+        a.phase3()
+    except:
+        url='http://129.10.89.145/running.php?job=%d&status=322'%int(id)
+        raw_return=urllib.urlopen(url).read()
+        print "Exploding."
+        return"""
+    a.viewgraph()
     url = 'http://129.10.89.145/running.php?job=%d&status=777'%int(id)
     raw_return=urllib.urlopen(url).read()
     os.chdir('../../../results/%d'%int(id))
@@ -1664,7 +1752,11 @@ def run():
     zf = zipfile.ZipFile('results.zip', 'w', zipfile.ZIP_DEFLATED)
     for f in filenames:
         zf.write(f)
-        os.system('rm -rf %s'%f)
+        #os.system('rm -rf %s'%f)
+    os.chdir('color')
+    filenames= os.listdir(os.getcwd())
+    for f in filenames:
+        zf.write(f,'color/'+f)
     zf.close()
     return
 if(__name__ == '__main__'):

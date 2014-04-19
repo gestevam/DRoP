@@ -2,10 +2,13 @@
 session_start();
 require("config.php");
 $dir = 'upload/user2/';
+//foreach($_POST as $key=>$value) {
+//    echo "<b>$key:</b> $value<br />";
+//} 
+//print $_POST['runtype'];
 #echo getcwd() . "\n";
 
-if ((($_FILES["file"]["type"] == "application/zip")||($_FILES["file"]["type"] =="application/x-zip-compressed")||($_FILES["file"]["type"] =='application/x-compressed')||($_FILES["file"]["type"] =='multipart/x-zip')
-)
+if ((($_FILES["file"]["type"] == "application/zip")||($_FILES["file"]["type"] =="application/x-zip-compressed")||($_FILES["file"]["type"] =='application/x-compressed')||($_FILES["file"]["type"] =='multipart/x-zip')||($_FILES["file"]["type"] == 'application/octet-stream')|| 1 ||($_FILES["file"]["type"] == 'application/download'))
 && ($_FILES["file"]["size"] > 1))
   {
   if ($_FILES["file"]["error"] > 0)
@@ -41,7 +44,18 @@ if ((($_FILES["file"]["type"] == "application/zip")||($_FILES["file"]["type"] ==
 	  $test=$runid;
 	  #print "<br />";
 	  #print shell_exec('python callablepython.py '.$test);
-          pclose(popen('python callablepython.py '.$test.' &','w'));
+	  if($_POST['runtype']==1)
+{
+	         pclose(popen('python callablepython.py '.$test.' &','w'));
+}
+	  if($_POST['runtype']==2)
+{
+		  pclose(popen('python Stop_Early.py '.$test.' &','w'));
+}
+	  if($_POST['runtype']==3)	
+{
+  		  pclose(popen('python FinalOnly.py '.$test.' &','w'));
+}
 	  #echo getcwd() . "\n";
 	  $test='4';
 	  chdir('upload/'.$test.'/');
@@ -66,7 +80,8 @@ else
   {
   echo "Invalid file";
   echo $_FILES["file"]["type"];
+  echo "<br>Returning to main page in 5 seconds.";
   }
 
-?> 
+?> <meta http-equiv='Refresh' content='5; URL=index.php' />
 

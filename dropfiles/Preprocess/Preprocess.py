@@ -926,6 +926,9 @@ def run():
         for f in filenames:
             if(f[-4:] == '.pdb'):
                 pdb_filenames.append(f)
+    if(len(pdb_filenames)==0):
+	url='http://129.10.89.145/running.php?job=%d&status=667'%int(id)
+	sys.exit(1)
     a = Analyzer(pdb_filenames, root, 1.0)
     input = ''
     print "Entering Phase"
