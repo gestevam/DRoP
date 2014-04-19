@@ -30,9 +30,16 @@ def run():
     filenames = os.listdir(os.getcwd())
     for f in filenames:
         if(f[-4:] == '.pdb'):
+    	    os.rename(f, f.replace(" ", "-"))
+    filenames = os.listdir(os.getcwd())
+    for f in filenames:
+        if(f[-4:] == '.pdb'):
             pdb_filenames.append(f)
-    basis=pdb_filenames[0]
+    basis=pdb_filenames[1]
     shutil.copyfile(basis,'../Final/'+basis)
+    if len(pdb_filenames)<2:
+        url='http://129.10.89.145/running.php?job=%d&staus=333'%int(id)
+        return
     for f in pdb_filenames:
         if (f!=basis):
 	    os.system("python cealign.py %s %s"%(basis,f))

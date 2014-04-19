@@ -45,3 +45,11 @@ results/
 user1/
 user2/
 *.log
+results/
+resultsbackup/
+uploadbackup/
+upload/
+upload_review/
+results_review/
+*.pdb
+pdbs.zip

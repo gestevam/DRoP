@@ -793,7 +793,7 @@ class PDB(list):
             line = line.rstrip()
             self.append(Atom(line, i, pdb=self, watercheck=self.watercheck))
             
-    def write(self,stamp,flag=0):
+    def write(self,stamp,flag=0,runid=-1):
         self.sortwaters()
         self.sortorganics()
         self.renumline()
@@ -804,7 +804,12 @@ class PDB(list):
         #if(not os.path.exists('Renumbered/' + stamp + '/')):
             #os.makedirs('Renumbered/' + stamp)
         #self.out_filename = self.out_filename.replace('Renumbered/', 'Renumbered/' + stamp + '/')
-	self.out_filename = self.out_filename.replace('Renumbered/','../Super/')
+	
+	if flag==999:
+            string='../../../results/%d/'%int(runid)
+            self.out_filename = self.out_filename.replace('Renumbered/',string)
+        else:
+            self.out_filename = self.out_filename.replace('Renumbered/','../Super/')
         #if flag==1:
         #    self.out_filename=self.out_filename[:-4] + self.out_filename[-4:]
         #if flag==2:

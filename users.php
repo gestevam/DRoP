@@ -72,6 +72,9 @@ if( !session_is_registered('login') ) {
 }
 else {
 	if( isset($_POST['setmanpw']))
+	if(empty($_POST['manpw']))
+			print "No password entered.";
+			else
 	{
 		$res = mysql_query("UPDATE users SET password = md5('{$_POST['manpw']}') WHERE user_ID = {$_GET['user']}",$link);
 		print "New Password Set.";
@@ -148,15 +151,15 @@ else {
 ?>
 		<form method="post" action="<?php print "{$_SERVER['PHP_SELF']}?user={$_SESSION['UID']}"; ?>">
 <?php
-print exec('python test.py');
-echo "<pre>$output</pre>";
+//print exec('python test.py');
+//echo "<pre>$output</pre>";
 			$res = mysql_Query("SELECT * FROM users WHERE user_ID = '{$_SESSION['UID']}'",$link);
             $resset = mysql_fetch_array($res);
             print "<table><tr><td>Name: </td><td>{$resset['name']}</td></tr>";
             print "<tr><td>Email: </td><td>{$resset['email']}</td></tr>";
-			$ps = createRandomPassword();
+			/*$ps = createRandomPassword();
                         print "<input type=\"hidden\" name=\"pswd\" value=\"{$ps}\" />";
-                        print "</tr><td><input type=\"submit\" name=\"reset\" value=\"Reset Password\" /></td>";
+                        print "</tr><td><input type=\"submit\" name=\"reset\" value=\"Reset Password\" /></td>";*/
 						print "</tr></table>";
 
 ?>
@@ -167,7 +170,7 @@ echo "<pre>$output</pre>";
 		</form>
 <?php
 	}
-	else{print "{$checks['user_ID']}";print "<br />{$_GET['user']}";}
+	//else{print "{$checks['user_ID']}";print "<br />{$_GET['user']}";}
 	print '</ul>';
 }
 ?>
@@ -197,8 +200,8 @@ print '<img src="images/side_bottomcopy.gif" alt="" /></div>';
 
 	<div id="footer">
 		<hr />
-		<p>&copy; 2010 by Bradley Kearney.</p>
-		<p>Feedback or questions? | E-mail the <a href="mailto:bmkearne@ncsu.edu">Webmaster</a>.</p>
+		<p>&copy; 2010-2013</p>
+		<p>Feedback or questions? | E-mail <a href="mailto:c.mattos@neu.edu">Carla Mattos</a>.</p>
 	</div>
 	</div>
 	

@@ -11,6 +11,7 @@ import os
 import copy
 import zipfile as zipf
 import shutil
+import urllib
 
 def run():
     argv = sys.argv[1:]
@@ -48,6 +49,18 @@ def run():
     #os.system("python unziptest.py")
     filenames = os.listdir(os.getcwd())
     for f in filenames:
+	if(f[-4:] == '.pdb'):
+	    url='http://129.10.89.145/running.php?job=%d&status=666'%int(writedirectory)
+	    raw_return=urllib.urlopen(url).read()
+	    sys.exit(1)
+        if(f[-4:] == '.rar'):
+            os.system("unrar x %s"%f)
+            if not os.path.exists('OriginalFiles/'):
+                os.system("mkdir OriginalFiles")
+            if not os.path.exists('Preprocess/'):
+                os.makedirs('Preprocess/')
+            os.system("cp *.pdb OriginalFiles")
+            os.system("mv *.pdb Preprocess")
         if(f[-4:] == '.zip'):
             myfile=zipf.ZipFile(f)
             for name in myfile.namelist():

@@ -11,7 +11,7 @@ $yourfile2="DRoP_Results_".$sample.".zip";
 $query = "SELECT * FROM data_sets WHERE data_ID = '{$sample}'";
 $results = mysql_query($query, $link) or die('Invalid Query: '.mysql_error());
 $resultset = mysql_fetch_array($results);
-if($resultset['user_ID']==$_SESSION['UID'])
+if($resultset['user_ID']==$_SESSION['UID'] || $_SESSION['UID']==1)
 {
 header ("Content-Type: application/download");
 header ("Content-Disposition: attachment; filename=$yourfile2");
