@@ -1,9 +1,0 @@
-Instructions for running DRoP directly on computer:
-
-1. Go into ~/Documents/DRoP_coding/Trial
-2. Open upload file, create a NUMERICALLY labled file. This is where the processing data lives.
-3. Create a zip file of your PDBs. Put this zip file in your numerically labled file enclosed in the upload file.
-4. Go into terminal and cd to .../Trial 
-5. Run the following:   python callablepython.py [numerical file name] 
-6. Results of the run will be in the .../Trial/results file under the same numerical file name
-7. You DRoP-ed!! 

@@ -1,5 +1,0 @@
-Cluster with 4 waters: 1
-Cluster with 3 waters: 100
-Cluster with 2 waters: 52
-Cluster with 1 waters: 679
-Waters grouped into 832 groups
