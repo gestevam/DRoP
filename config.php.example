@@ -1,0 +1,21 @@
+<?php
+
+$sql_host = "localhost";
+$sql_user = "drop_user"; //do not use your adm user, use wrt
+
+$sql_password = "*************";
+
+$link = mysql_connect($sql_host, $sql_user, $sql_password);
+if(!$link) {
+   die('Could not connect: '. mysql_error());
+}
+
+$dbName = 'DRoP_Database'; //name of database to use
+
+$db_selected = mysql_select_db($dbName,$link);
+
+if(!$db_selected){
+   die('Can\'t use {$dbName} : '. mysql_error());
+}
+
+?>
