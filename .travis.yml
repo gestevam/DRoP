@@ -1,0 +1,5 @@
+language: php
+before_install:
+  - echo Hello World
+script:
+  - echo Everything is OK
