@@ -1,6 +1,6 @@
 version: "3.3"
 services:
-  mywebsite:
+  website:
     image: php:5.3.29-apache
     volumes:
       - .:/var/www/html/
@@ -9,6 +9,8 @@ services:
       - "8888:80"
     links:
       - database
+    env_file:
+      - config.env
   database:
     image: mysql
     volumes:
@@ -19,9 +21,8 @@ services:
       - '--default-authentication-plugin=mysql_native_password'
     restart: always
     environment:
-      MYSQL_USER: drop_user
-      MYSQL_PASSWORD: wjmy7DO5Osdt0Dc89BQ7mXTZ
       MYSQL_RANDOM_ROOT_PASSWORD: 1
-      MYSQL_DATABASE: DRoP_Database
+    env_file:
+      - config.env
     ports:
       - "3310:3306"

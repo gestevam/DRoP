@@ -54,6 +54,7 @@ results_review/
 *.pdb
 pdbs.zip
 config.php
+config.env
 
 # pycharm
 .idea
