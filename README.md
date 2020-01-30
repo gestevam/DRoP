@@ -5,13 +5,16 @@ Detection of Related Solvent Positions: analysis of conserved crystallographic w
 # Set up dev environment
 
 1. [Install docker](https://docs.docker.com/install/)
-2. Copy
-    - `config.php.example` to `config.php`
-    - `config.env.example` to `config.env` and change the password to something new and random
-2. Run `docker-compose up`
-3. Go to http://localhost:8888/ in your browser
+2. Make sure you have [git](https://git-scm.com/) installed and run
+    - `git clone https://github.com/mattoslab/DRoP.git`
+    - `cd DRoP`
+    - `cp -n config.php.example config.php`
+    - `cp -n config.env.example config.env`
+    - Open `config.env` and change the password to something new and random
+3. Run `docker-compose up`
+4. Go to http://localhost:8888/ in your browser
 
-To stop the server, use Ctrl-C.
+To stop the local server, use Ctrl-C.
 
 To reset your database (deleting all its contents!) run
 `docker-compose rm database`.
