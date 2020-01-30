@@ -4,7 +4,6 @@ before_install:
   - sed -i.bak 's/\*\*\*\*\*\*\*\*\*\*\*\*\*/R7L128L0AapTohOpa5p91hLG/g' config.env
   - cp config.php.example config.php
   - docker-compose up -d
-  - sleep 15
 script:
   - curl http://localhost:8888/ -v 2>&1 | grep '< HTTP/1.1 200 OK'
 services:
